@@ -178,7 +178,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             return new AutofacServiceProvider(container.Build());
         }
-    
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -203,7 +203,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 Predicate = r => r.Name.Contains("self")
             });
 
-            app.UseStaticFiles();          
+            app.UseStaticFiles();
             app.UseCors("CorsPolicy");
 
             ConfigureAuth(app);
@@ -214,7 +214,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
-                   c.OAuthClientId ("basketswaggerui");
+                   c.OAuthClientId("basketswaggerui");
                    c.OAuthAppName("Basket Swagger UI");
                });
 
@@ -226,7 +226,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
         {
             services.AddApplicationInsightsTelemetry(Configuration);
             var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
-            
+
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
@@ -245,8 +245,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl"); 
-                
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -281,7 +281,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();                    
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
@@ -318,7 +318,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
             eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
-        }        
+        }
     }
 
     public static class CustomExtensionMethods
@@ -329,7 +329,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
 
-            hcBuilder                
+            hcBuilder
                 .AddRedis(
                     configuration["ConnectionString"],
                     name: "redis-check",
