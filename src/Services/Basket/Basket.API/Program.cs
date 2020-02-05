@@ -64,6 +64,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 .Enrich.WithProperty("ApplicationContext", AppName)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
+                .WriteTo.RollingFile("./logs/.log")
                 .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
                 .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl)
                 .ReadFrom.Configuration(configuration)

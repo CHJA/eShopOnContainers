@@ -83,7 +83,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 .Enrich.WithProperty("ApplicationContext", AppName)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.File("./logs/log.txt")
+                .WriteTo.RollingFile("./logs/.log")
                 .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
                 .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://localhost:8080" : logstashUrl)
                 .ReadFrom.Configuration(configuration)

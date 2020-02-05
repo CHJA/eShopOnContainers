@@ -93,7 +93,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             app.UseSwagger()
               .UseSwaggerUI(c =>
               {
-                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Catalog.API V1");
+                  c.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "Catalog.API V1");
               });
 
             ConfigureEventBus(app);
@@ -130,7 +130,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         }
 
         public static IServiceCollection AddCustomMVC(this IServiceCollection services, IConfiguration configuration)
-        {                                        
+        {
             services.AddMvc(options =>
                 {
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
@@ -166,12 +166,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     tags: new string[] { "catalogdb" });
 
             if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
-            {                
+            {
                 hcBuilder
-                    .AddAzureBlobStorage(
-                        $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
-                        name: "catalog-storage-check",
-                        tags: new string[] { "catalogstorage" });
+                    .AddAzureBlobStorage($"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
+                    name: "catalog-storage-check",
+                    tags: new string[] { "catalogstorage" });
             }
 
             if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
@@ -199,13 +198,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         {
             services.AddDbContext<CatalogContext>(options =>
             {
-                options.UseSqlServer(configuration["ConnectionString"],
-                                     sqlServerOptionsAction: sqlOptions =>
-                                     {
-                                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                     });
+                options.UseSqlServer(configuration["ConnectionString"], sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                    });
 
                 // Changing default behavior when client evaluation occurs to throw. 
                 // Default in EF Core would be to log a warning when client evaluation is performed.
@@ -215,13 +213,12 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
             services.AddDbContext<IntegrationEventLogContext>(options =>
             {
-                options.UseSqlServer(configuration["ConnectionString"],
-                                     sqlServerOptionsAction: sqlOptions =>
-                                     {
-                                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                     });
+                options.UseSqlServer(configuration["ConnectionString"], sqlServerOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                    sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                });
             });
 
             return services;
@@ -266,13 +263,11 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             });
 
             return services;
-
         }
 
         public static IServiceCollection AddIntegrationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
-                sp => (DbConnection c) => new IntegrationEventLogService(c));
+            services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(sp => (DbConnection c) => new IntegrationEventLogService(c));
 
             services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
