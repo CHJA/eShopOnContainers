@@ -43,6 +43,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 {
                     ClientId = "js",
                     ClientName = "eShop SPA OpenId Client",
+                    ClientUri = $"{clientsUrl["Spa"]}",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris =           { $"{clientsUrl["Spa"]}/" },
@@ -66,6 +67,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 {
                     ClientId = "xamarin",
                     ClientName = "eShop Xamarin OpenId Client",
+                    ClientUri = $"{clientsUrl["Xamarin"]}",
                     AllowedGrantTypes = GrantTypes.Hybrid,                    
                     //Used to retrieve the access token on the back channel.
                     ClientSecrets =
@@ -201,6 +203,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 {
                     ClientId = "locationsswaggerui",
                     ClientName = "Locations Swagger UI",
+                    ClientUri = $"{clientsUrl["LocationsApi"]}",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
@@ -216,6 +219,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 {
                     ClientId = "marketingswaggerui",
                     ClientName = "Marketing Swagger UI",
+                    ClientUri = $"{clientsUrl["MarketingApi"]}",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
@@ -247,6 +251,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 {
                     ClientId = "orderingswaggerui",
                     ClientName = "Ordering Swagger UI",
+                    ClientUri = $"{clientsUrl["OrderingApi"]}",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
@@ -262,6 +267,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 {
                     ClientId = "mobileshoppingaggswaggerui",
                     ClientName = "Mobile Shopping Aggregattor Swagger UI",
+                    ClientUri = $"{clientsUrl["MobileShoppingAgg"]}",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
@@ -277,6 +283,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 {
                     ClientId = "webshoppingaggswaggerui",
                     ClientName = "Web Shopping Aggregattor Swagger UI",
+                    ClientUri = $"{clientsUrl["WebShoppingAgg"]}",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
@@ -292,6 +299,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 {
                     ClientId = "webhooksswaggerui",
                     ClientName = "WebHooks Service Swagger UI",
+                    ClientUri = $"{clientsUrl["WebhooksApi"]}",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
