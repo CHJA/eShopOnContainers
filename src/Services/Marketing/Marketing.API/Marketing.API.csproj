@@ -7,16 +7,15 @@
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <UserSecretsId>aspnet-Marketing.API-20161122013619</UserSecretsId>
     <AssemblyName />
-    <ApplicationInsightsResourceId>/subscriptions/6c22bb55-0221-4ce4-9bf1-3c4a10a7294c/resourcegroups/eshop-log/providers/microsoft.insights/components/eshopappinsights</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/6c22bb55-0221-4ce4-9bf1-3c4a10a7294c/resourcegroups/eshop-log/providers/microsoft.insights/components/eshopappinsights</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Connected Services\" />
     <Folder Include="Infrastructure\MarketingMigrations\" />
     <Content Include="Pics\**\*;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Remove="appsettings.json" />
     <Folder Include="Infrastructure\MarketingMigrations\" />
   </ItemGroup>
   <ItemGroup>
@@ -27,7 +26,6 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="2.2.4" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.2.2" />

@@ -48,6 +48,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                 .UseFailing(options =>
                     options.ConfigPath = "/Failing")
                 .UseStartup<Startup>()
+                .UseUrls("http://*:5103")
                 .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseConfiguration(configuration)

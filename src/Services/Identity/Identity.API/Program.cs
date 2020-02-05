@@ -67,7 +67,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(false)
                 .UseStartup<Startup>()
-                .UseUrls("http://*:55105")
+                .UseUrls("http://*:5105;https://*:5106")
                 .UseApplicationInsights()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseConfiguration(configuration)
