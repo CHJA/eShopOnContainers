@@ -1,4 +1,5 @@
-﻿using HealthChecks.UI.Client;
+﻿using System;
+using HealthChecks.UI.Client;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Builder;
@@ -31,9 +32,18 @@ namespace WebStatus
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
             services.AddHealthChecksUI();
-            
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromSeconds(6);
+                options.ExcludedHosts.Add("example.com");
+                options.ExcludedHosts.Add("www.example.com");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,11 +74,13 @@ namespace WebStatus
                 Predicate = r => r.Name.Contains("self")
             });
 
-            app.UseHealthChecksUI(config => {
+            // HealthChecksUI默认访问路由为/healthchecks-ui
+            app.UseHealthChecksUI(config =>
+            {
                 config.ResourcesPath = string.IsNullOrEmpty(pathBase) ? "/ui/resources" : $"{pathBase}/ui/resources";
-                config.UIPath = "/hc-ui"; 
+                config.UIPath = "/hc-ui";
             });
-            
+
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
@@ -94,8 +106,7 @@ namespace WebStatus
             if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
-                    new FabricTelemetryInitializer());
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) => new FabricTelemetryInitializer());
             }
         }
     }
