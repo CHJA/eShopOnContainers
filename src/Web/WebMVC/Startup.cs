@@ -113,7 +113,6 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
     static class ServiceCollectionExtensions
     {
-
         public static IServiceCollection AddAppInsight(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddApplicationInsightsTelemetry(configuration);
@@ -128,8 +127,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
-                    new FabricTelemetryInitializer());
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) => new FabricTelemetryInitializer());
             }
 
             return services;
@@ -141,8 +139,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddUrlGroup(new Uri(configuration["PurchaseUrlHC"]), name: "purchaseapigw-check", tags: new string[] { "purchaseapigw" })
                 .AddUrlGroup(new Uri(configuration["MarketingUrlHC"]), name: "marketingapigw-check", tags: new string[] { "marketingapigw" })
-                .AddUrlGroup(new Uri(configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });                
-            
+                .AddUrlGroup(new Uri(configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
+
             return services;
         }
 
@@ -181,23 +179,23 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
             //add http client services
             services.AddHttpClient<IBasketService, BasketService>()
-                   .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
-                   .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                   .AddPolicyHandler(GetRetryPolicy())
-                   .AddPolicyHandler(GetCircuitBreakerPolicy())
-                   .AddDevspacesSupport();
+                .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Sample. Default lifetime is 2 minutes
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
 
             services.AddHttpClient<ICatalogService, CatalogService>()
-                   .AddPolicyHandler(GetRetryPolicy())
-                   .AddPolicyHandler(GetCircuitBreakerPolicy())
-                   .AddDevspacesSupport();
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
 
             services.AddHttpClient<IOrderingService, OrderingService>()
-                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                 .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
-                 .AddPolicyHandler(GetRetryPolicy())
-                 .AddPolicyHandler(GetCircuitBreakerPolicy())
-                 .AddDevspacesSupport();
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddHttpMessageHandler<HttpClientRequestIdDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
 
             services.AddHttpClient<ICampaignService, CampaignService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
@@ -206,10 +204,10 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 .AddDevspacesSupport();
 
             services.AddHttpClient<ILocationService, LocationService>()
-               .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-               .AddPolicyHandler(GetRetryPolicy())
-               .AddPolicyHandler(GetCircuitBreakerPolicy())
-               .AddDevspacesSupport();
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy())
+                .AddDevspacesSupport();
 
             //add custom application services
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
@@ -247,7 +245,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie(setup=>setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
+            .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
             .AddOpenIdConnect(options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -266,7 +264,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
                 options.Scope.Add("marketing");
                 options.Scope.Add("locations");
                 options.Scope.Add("webshoppingagg");
-                options.Scope.Add("orders.signalrhub");       
+                options.Scope.Add("orders.signalrhub");
             });
 
             return services;

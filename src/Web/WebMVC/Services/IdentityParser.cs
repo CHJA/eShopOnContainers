@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
-    public class IdentityParser:IIdentityParser<ApplicationUser>
+    public class IdentityParser : IIdentityParser<ApplicationUser>
     {
         public ApplicationUser Parse(IPrincipal principal)
         {

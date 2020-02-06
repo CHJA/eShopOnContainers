@@ -36,7 +36,8 @@ namespace OcelotApiGw
                     config
                         .MinimumLevel.Information()
                         .Enrich.FromLogContext()
-                        .WriteTo.Console();
+                        .WriteTo.Console()
+                        .WriteTo.RollingFile("./logs/.log");
                 });
             IWebHost host = builder.Build();
             return host;

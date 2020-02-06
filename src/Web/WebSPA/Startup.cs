@@ -48,7 +48,7 @@ namespace eShopConContainers.WebSPA
                 .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddUrlGroup(new Uri(Configuration["PurchaseUrlHC"]), name: "purchaseapigw-check", tags: new string[] { "purchaseapigw" })
                 .AddUrlGroup(new Uri(Configuration["MarketingUrlHC"]), name: "marketingapigw-check", tags: new string[] { "marketingapigw" })
-                .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });                        
+                .AddUrlGroup(new Uri(Configuration["IdentityUrlHC"]), name: "identityapi-check", tags: new string[] { "identityapi" });
 
             services.Configure<AppSettings>(Configuration);
 
@@ -69,6 +69,21 @@ namespace eShopConContainers.WebSPA
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 });
+
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromSeconds(6);
+                options.ExcludedHosts.Add("example.com");
+                options.ExcludedHosts.Add("www.example.com");
+            });
+
+            services.AddSpaStaticFiles(config =>
+            {
+                //angular文件所在文件夹
+                config.RootPath = "client";
+            });
         }
 
 
@@ -128,16 +143,26 @@ namespace eShopConContainers.WebSPA
                 // Rewrite request to use app root
                 if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value) && !context.Request.Path.Value.StartsWith("/api"))
                 {
-                    context.Request.Path = "/index.html"; 
+                    context.Request.Path = "/index.html";
                     context.Response.StatusCode = 200; // Make sure we update the status code, otherwise it returns 404
                     await next();
                 }
             });
-            
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseMvcWithDefaultRoute();
+            app.UseSpa(spa =>
+            {
+                if (env.IsDevelopment())
+                {
+                    // 本地调试用
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                }
+            });
+
         }
 
         private void RegisterAppInsights(IServiceCollection services)
@@ -153,8 +178,7 @@ namespace eShopConContainers.WebSPA
             if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
-                    new FabricTelemetryInitializer());
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) => new FabricTelemetryInitializer());
             }
         }
     }

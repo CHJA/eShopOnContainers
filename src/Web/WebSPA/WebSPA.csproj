@@ -98,6 +98,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
   </ItemGroup>
 
 
@@ -109,10 +110,6 @@
       </ItemGroup>
   </Target>
   -->
-
-  <ItemGroup>
-    <Folder Include="wwwroot\assets\" />
-  </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="Client\environments\environment.prod.ts" />
@@ -172,6 +169,10 @@
     <TypeScriptCompile Include="Client\polyfills.ts" />
     <TypeScriptCompile Include="Client\test.ts" />
     <TypeScriptCompile Include="Client\typings.d.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\images\" />
   </ItemGroup>
 
   <ProjectExtensions>

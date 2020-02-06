@@ -48,7 +48,7 @@ namespace WebSPA.Infrastructure
                 {
                     foreach (ZipArchiveEntry entry in zip.Entries)
                     {
-                        if (imageFiles.Contains(entry.Name))
+                        if (!imageFiles.Contains(entry.Name))
                         {
                             string destinationFilename = Path.Combine(imagePath, entry.Name);
                             if (File.Exists(destinationFilename))

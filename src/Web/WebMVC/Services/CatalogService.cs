@@ -30,7 +30,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type)
         {
-            var uri = API.Catalog.GetAllCatalogItems(_remoteServiceBaseUrl, page, take, brand, type);
+            string uri = API.Catalog.GetAllCatalogItems(_remoteServiceBaseUrl, page, take, brand, type);
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
