@@ -151,8 +151,7 @@
             if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
-                    new FabricTelemetryInitializer());
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) => new FabricTelemetryInitializer());
             }
 
             return services;
@@ -162,12 +161,13 @@
         {
             // Add framework services.
             services.AddMvc(options =>
-                {
-                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddControllersAsServices();  //Injecting Controllers themselves thru DI
-                                              //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .AddControllersAsServices();  
+            //Injecting Controllers themselves thru DI
+            //For further info see: http://docs.autofac.org/en/latest/integration/aspnetcore.html#controllers-as-services
 
             services.AddCors(options =>
             {
@@ -218,27 +218,27 @@
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddEntityFrameworkSqlServer()
-                   .AddDbContext<OrderingContext>(options =>
-                   {
-                       options.UseSqlServer(configuration["ConnectionString"],
-                           sqlServerOptionsAction: sqlOptions =>
-                           {
-                               sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                               sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                           });
+                .AddDbContext<OrderingContext>(options =>
+                {
+                    options.UseSqlServer(configuration["ConnectionString"],
+                        sqlServerOptionsAction: sqlOptions =>
+                        {
+                            sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                        });
                    },
-                       ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+                   ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                    );
 
             services.AddDbContext<IntegrationEventLogContext>(options =>
             {
                 options.UseSqlServer(configuration["ConnectionString"],
-                                     sqlServerOptionsAction: sqlOptions =>
-                                     {
-                                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                     });
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                    });
             });
 
             return services;

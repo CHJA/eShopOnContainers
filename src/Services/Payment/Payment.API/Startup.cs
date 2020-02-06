@@ -129,8 +129,7 @@ namespace Payment.API
             if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
-                    new FabricTelemetryInitializer());
+                services.AddSingleton<ITelemetryInitializer>((serviceProvider) => new FabricTelemetryInitializer());
             }
         }
 
